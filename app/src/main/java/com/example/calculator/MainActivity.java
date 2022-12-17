@@ -2,6 +2,7 @@ package com.example.calculator;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,7 +23,7 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 
 public class MainActivity extends AppCompatActivity {
-    Button b1, b2, b3 , b4 ,b5, b6, b7, b8, b9, b0, dot, div, mul, add ,sub, equal,c,cl;
+    Button b1, b2, b3 , b4 ,b5, b6, b7, b8, b9, b0, dot, div, mul, add ,sub, equal, c, cl, r, b;
     TextView e;
     String x ;
     EditText t;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         b1 = findViewById(R.id.button28);
+       // r = findViewById(R.id.button5);
         b2 = findViewById(R.id.button29);
         b3 = findViewById(R.id.button2);
         b4 = findViewById(R.id.button);
@@ -49,8 +51,25 @@ public class MainActivity extends AppCompatActivity {
         equal = findViewById(R.id.button43);
         cl = findViewById(R.id.button4);
         t = findViewById(R.id.editTextTextPersonName);
-
+        b = findViewById(R.id.button7);
         c = findViewById(R.id.button3);
+
+//        r.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                Intent i = new Intent(MainActivity.this,MainActivity2.class);
+//                startActivity(i);
+//            }
+//        });
+
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i2 = new Intent(MainActivity.this,MainActivity3.class);
+                startActivity(i2);
+            }
+        });
 
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
         {
             @Override
             public void onClick(View view) {
+
                 update("2");
             }
         });
@@ -180,13 +200,33 @@ public class MainActivity extends AppCompatActivity {
         {
             @Override
             public void onClick(View view) {
+                int count = 0;
+                int count2 = 0;
+                String res;
                 x = t.getText().toString();
                 x = x.replaceAll("x", "*");
                 x = x.replaceAll("÷", "/");
+                for (int i = 0; i < x.length(); i++) {
+                    if(x.charAt(i)=='.')
+                    {
+                        count++;
+                        break;
+                    }
+                    if(x.charAt(i)=='/')
+                    {
+                        count2++;
+                    }
+                }
                 Expression exp = new Expression(x);
-                String res = String.valueOf(exp.calculate());
+                if(count>0||count2>0) {
+                     res = String.valueOf(exp.calculate());
+                }
+                else
+                {
+                    long a = (long)exp.calculate();
+                    res = String.valueOf(a);
+                }
                 t.setText(res);
-
             }
         });
     }
